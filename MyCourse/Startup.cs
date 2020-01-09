@@ -15,6 +15,7 @@ namespace MyCourse
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -27,16 +28,24 @@ namespace MyCourse
                  app.UseDeveloperExceptionPage(); 
             }
 
-            // 2° middleware (per file statici) (è anadato a vedere all'interno dell'oggetto httpcontext e ha visto che il percorso digitato (https://localhost:5001/CA_INDOSUEZ_.jpg) corrisponde esattamente a un file fisico 
+            // 2° middleware (per file statici) (è andato a vedere all'interno dell'oggetto httpcontext e ha visto che il percorso digitato (https://localhost:5001/CA_INDOSUEZ_.jpg) corrisponde esattamente a un file fisico 
             // all'interno della directory wwwroot)
             app.UseStaticFiles();
 
-            //ultimo middleware
-            app.Run(async (context) => 
+
+            // 3° middleware di Routing : se nella barra del url scriviamo "/Courses/Detail/5" quando la richiesta arriva a questo middleware che verifica :
+            // l'utente ha chiesto Courses e quindi verifico se esiste all'interno dell'applicazione un CoursesController (esiste). 
+            // Esiste anche un action Detail in questo Controller?? esiste e può gestire la richiesta restitundo un risultato.
+            
+            // app.UseMvcWithDefaultRoute();  => fa esattamente quello che c'è sotto
+
+            // UseMvc accetta come parametro una funzione
+            app.UseMvc(routeBuilder => 
             {
-                string nome = context.Request.Query["nome"];
-                await context.Response.WriteAsync($"Hello {nome}!");
+                routeBuilder.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });
+            
+
         }
     }
 }
