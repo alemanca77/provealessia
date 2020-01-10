@@ -33,7 +33,6 @@ namespace MyCourse
             // all'interno della directory wwwroot)
             app.UseStaticFiles();
 
-
             // 3° middleware di Routing : se nella barra del url scriviamo "/Courses/Detail/5" quando la richiesta arriva a questo middleware che verifica :
             // l'utente ha chiesto Courses e quindi verifico se esiste all'interno dell'applicazione un CoursesController (esiste). 
             // Esiste anche un action Detail in questo Controller?? esiste e può gestire la richiesta restitundo un risultato.
@@ -45,8 +44,6 @@ namespace MyCourse
             {
                 routeBuilder.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });
-            
-
         }
     }
 }
